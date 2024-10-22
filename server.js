@@ -57,6 +57,22 @@ app.get('/shoes', (req, res) => {
   const minPrice = req.query.minPrice
   const maxPrice = req.query.maxPrice
   const type = req.query.type
+  let filteredShoes = shoes
+
+  if (minPrice && !maxPrice) {
+    filteredShoes =  filteredShoes.filter((item) => item.price >= minPrice)
+  } else if (!minPrice && maxPrice) {
+    filteredShoes =  filteredShoes.filter((item) => item.price <= maxPrice)
+  } else if (minPrice && maxPrice) {
+    filteredShoes =  filteredShoes.filter((item) => item.price <= maxPrice && item.price >= minPrice)
+  }
+
+  if (type){
+    filteredShoes =  filteredShoes.filter((item) => item.type === type)
+  }
+  
+  //show result
+  res.send(filteredShoes)
 })
 
 // Listen for requests on port 3000
